@@ -2,18 +2,17 @@
   const API_BASE = "http://localhost:8000/api/v1";
 
   document.addEventListener('DOMContentLoaded', init);
-  document.addEventListener('DOMContentLoaded', () => {
-  const modalhtml = document.getElementById('movieModal');
-  modalhtml.addEventListener('hidden.bs.modal', () => {
-    document.body.classList.remove('modal-open');
-    document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
-    const modal = bootstrap.Modal.getInstance(modalhtml);
-    if (modal) modal.dispose();
-    document.body.style.overflow = 'auto';
-  });
-});
 
   async function init() {
+    // Configuration du nettoyage de la modal
+    const modalElement = document.getElementById('movieModal');
+    modalElement.addEventListener('hidden.bs.modal', () => {
+      document.body.classList.remove('modal-open');
+      document.querySelectorAll('.modal-backdrop').forEach(b => b.remove());
+      const modal = bootstrap.Modal.getInstance(modalElement);
+      if (modal) modal.dispose();
+      document.body.style.overflow = 'auto';
+    });
     try {
       
       const best = await fetchBestFilm();
@@ -143,18 +142,18 @@ function attachShowMore(buttonId, gridId, category=null) {
 
 
   async function fetchBestFilm() {
-    const bestfilm = await fetch(`${API_BASE}/titles/?sort_by=-votes,-imdb_score&limit=1`);
-    const data = await bestfilm.json();
-    const bestid = data.results?.[0]?.id;
-      if (!bestid) return null;
-      const detailbestfilm = await fetch(`${API_BASE}/titles/${bestid}`);
-      return await detailbestfilm.json();
+    const bestFilmResponse = await fetch(`${API_BASE}/titles/?sort_by=-votes,-imdb_score&limit=1`);
+    const data = await bestFilmResponse.json();
+    const bestId = data.results?.[0]?.id;
+      if (!bestId) return null;
+      const detailBestFilmResponse = await fetch(`${API_BASE}/titles/${bestId}`);
+      return await detailBestFilmResponse.json();
 }
 
-  async function fetchTopRated(limit, page = 1, alreadycharged= []) {
+  async function fetchTopRated(limit, page = 1, alreadyLoaded = []) {
   const resp = await fetch(
     `${API_BASE}/titles/?sort_by=-votes,-imdb_score&page=${page}`);
-  if (!resp.ok) return alreadycharged;
+  if (!resp.ok) return alreadyLoaded;
   const { results } = await resp.json();  
 
   //On charge les détails via l'id
@@ -166,8 +165,8 @@ function attachShowMore(buttonId, gridId, category=null) {
     )
   );
 
-  //on concatène et on filtre toujours 
-  const films = alreadycharged.concat(details.filter(Boolean))
+  //on concatène et on filtre toujours
+  const films = alreadyLoaded.concat(details.filter(Boolean))
                    .filter((f, i, arr) => arr.findIndex(x => x.id === f.id) === i);
 
   //fix de l'erreur de 5 résultats
@@ -180,10 +179,10 @@ function attachShowMore(buttonId, gridId, category=null) {
 }
 
 
-  async function fetchByCategory(category, limit, page = 1, alreadycharged = []) {
+  async function fetchByCategory(category, limit, page = 1, alreadyLoaded = []) {
     const resp = await fetch(
       `${API_BASE}/titles/?genre_contains=${category}&sort_by=-votes,-imdb_score&page=${page}`);
-    if (!resp.ok) return alreadycharged;
+    if (!resp.ok) return alreadyLoaded;
     const { results } = await resp.json();   
 
     //on charge les détails
@@ -195,8 +194,8 @@ function attachShowMore(buttonId, gridId, category=null) {
       )
     );
 
-    
-    const films = alreadycharged
+
+    const films = alreadyLoaded
       .concat(details.filter(Boolean))
       .filter((f, i, arr) => arr.findIndex(x => x.id === f.id) === i);
 
@@ -212,26 +211,26 @@ function attachShowMore(buttonId, gridId, category=null) {
 
 
   function renderBestFilm(film) {
-    const bestfilmcard = document.getElementById('best-film-card');
-    bestfilmcard.innerHTML = '';
+    const bestFilmCard = document.getElementById('best-film-card');
+    bestFilmCard.innerHTML = '';
     if (!film) {
-      bestfilmcard.textContent = "Pas de film disponible.";
+      bestFilmCard.textContent = "Pas de film disponible.";
       return;
     }
 
     const content = document.getElementById('best-film-template').content;
     const clone = content.cloneNode(true);
 
-    
+
     clone.querySelector('img').src = film.image_url;
     clone.querySelector('img').alt = film.original_title;
     clone.querySelector('h3').textContent = film.original_title;
     clone.querySelector('p').textContent = film.long_description || "Description non disponible";
 
     const btn = clone.querySelector('.btn-details');
-    btn.dataset.id = film.id; 
+    btn.dataset.id = film.id;
     btn.addEventListener('click', () => showDetails(film.id));
-    bestfilmcard.appendChild(clone);
+    bestFilmCard.appendChild(clone);
   }
 
 
@@ -253,7 +252,7 @@ function attachShowMore(buttonId, gridId, category=null) {
     const img = clone.querySelector('img');    
     img.src = movie.image_url || "Image non disponible";                
     img.alt = movie.original_title;  
-    // img.onerror = () => { img.onerror = null; img.src = 'placeholder.png'; };         
+         
 
     
     const titleEl = clone.querySelector('.title');
@@ -276,10 +275,10 @@ function attachShowMore(buttonId, gridId, category=null) {
   }
 
   function fillModal(movie) {
-    const modalhtml = document.getElementById('movieModal');
-    const modal = new bootstrap.Modal(modalhtml);
-    modalhtml.querySelector('.modal-title').textContent = movie.original_title;
-    modalhtml.querySelector('.modal-body').innerHTML = `
+    const modalElement = document.getElementById('movieModal');
+    const modal = new bootstrap.Modal(modalElement);
+    modalElement.querySelector('.modal-title').textContent = movie.original_title;
+    modalElement.querySelector('.modal-body').innerHTML = `
       <img src="${movie.image_url}" class="img-fluid mb-3">
       <p><strong>Genres :</strong> ${movie.genres.join(', ')}</p>
       <p><strong>Date de sortie :</strong> ${movie.date_published}</p>

@@ -1,2 +1,14 @@
-OCMovies-API-EN-FR/data/*.db.zip
-OCMovies-API-EN-FR/*.bkp
+OCMovies-API-EN-FR/
+node_modules/
+.env
+.env.local
+dist/
+build/
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+.vscode/
+.idea/
+*.swp
+*.swo
