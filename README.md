@@ -92,56 +92,6 @@ Testez en accédant à [http://localhost:8000/api/v1/titles](http://localhost:80
 
 ⚠️ **Important :** Gardez ce terminal ouvert avec le serveur en cours d'exécution.
 
----
-
-### Étape 2 : Lancer JustStreamIt
-
-JustStreamIt est un projet **100% statique** - aucune installation requise !
-
-#### 2.1 Ouvrir un nouveau terminal
-
-Ouvrez un **nouveau terminal** dans le dossier JustStreamIt (pas dans OCMovies-API-EN-FR) :
-
-```bash
-cd ..
-```
-
-Si vous étiez dans `OCMovies-API-EN-FR/`, cette commande vous ramène dans `JustStreamIt/`.
-
-#### 2.2 Démarrer l'application
-
-**Option A : Ouverture directe (rapide mais peut causer des erreurs CORS)**
-
-Double-cliquez sur `index.html` pour l'ouvrir dans votre navigateur.
-
-**Option B : Serveur HTTP local (recommandé)**
-
-Choisissez l'une des méthodes suivantes selon ce qui est installé sur votre machine :
-
-**Avec Python :**
-```bash
-# Python 3
-python -m http.server 8080
-
-# Python 2
-python -m SimpleHTTPServer 8080
-```
-
-**Avec Node.js :**
-```bash
-npx http-server -p 8080
-```
-
-**Avec PHP :**
-```bash
-php -S localhost:8080
-```
-
-**Avec VS Code :**
-- Installez l'extension "Live Server"
-- Clic droit sur `index.html` → "Open with Live Server"
-
-Puis ouvrez votre navigateur à l'adresse : **http://localhost:8080**
 
 🎉 **C'est prêt !** Les films devraient se charger automatiquement.
 
@@ -160,8 +110,6 @@ JustStreamIt/
 ├── .gitignore          # Fichiers ignorés par Git
 └── README.md           # Ce fichier
 ```
-
-**Aucun fichier de configuration** (pas de package.json, pas de build, pas de node_modules).
 
 ---
 
@@ -185,12 +133,6 @@ Si vous devez changer cette URL (autre port, déploiement distant), modifiez cet
 
 **Solution :** Vérifiez que le serveur API tourne sur http://localhost:8000
 
-### ❌ Erreur : CORS / Cross-Origin
-
-**Cause :** Vous avez ouvert `index.html` directement (protocole `file://`).
-
-**Solution :** Utilisez un serveur HTTP local (voir Étape 2, Option B).
-
 ### ❌ Aucun film ne s'affiche
 
 **Solutions :**
@@ -212,13 +154,6 @@ Les posters sont fournis par l'API. Si une image manque, un placeholder gris app
 4. **Catégorie personnalisée** : Sélectionnez un genre dans "Autres" et cliquez sur "Charger"
 
 ---
-
-## 🌐 Compatibilité
-
-- ✅ Chrome 90+
-- ✅ Firefox 88+
-- ✅ Safari 14+
-- ✅ Edge 90+
 
 ## 📝 Contraintes Techniques Respectées
 
