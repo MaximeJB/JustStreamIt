@@ -17,6 +17,7 @@
     try {
       
       const best = await fetchBestFilm();
+      console.log("Meilleur film :", best);
       renderBestFilm(best);
 
       
