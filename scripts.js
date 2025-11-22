@@ -2,7 +2,6 @@
   const API_BASE = "http://localhost:8000/api/v1";
 
   document.addEventListener('DOMContentLoaded', init);
-  //ici une tentative de debug sur le modal qui se referme pas
   document.addEventListener('DOMContentLoaded', () => {
   const modalhtml = document.getElementById('movieModal');
   modalhtml.addEventListener('hidden.bs.modal', () => {
